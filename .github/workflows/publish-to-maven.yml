@@ -16,11 +16,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
       - name: get zip
         run: echo "assume we do zip here"
 
       - name: upload
-        uses: actions/checkout@v4
+
         with:
           bearer: ${{ secrets.CENTRAL_TOKEN }}
         run: |
