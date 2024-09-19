@@ -40,12 +40,21 @@ jobs:
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
 
+      - shell: bash
+        env:
+          BEARER: ${{ secrets.MAVEN_CENTRAL }}
+          GPG: ${{ secrets.GPG_FILE }}
+          GPG_KEY_ID: ${{ secrets.GPG_ID_KEY_ID }}
+          GPG_PASSWORD: ${{ secrets.GPG_PASSWORD }}
+        run: |
+          echo $GPG | base64 --decode > secring.gpg
+          echo "\nsigning.keyId=$GPG_KEY_ID\nsigning.password=$GPG_PASSWORD\nsigning.secretKeyRingFile=secring.gpg\n" >> gradle.properties
 
       - name: Build library
-        run: ./gradlew sean:assemble
+        run: ./gradlew sean:publishAllPublicationsToMavenRepository
 
       - name: Upload AAR
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.date_today }} - lib - ${{ env.repository_name }} - AAR(s)  generated
-          path: ${{ env.module_name }}/build/outputs/aar/
+          path: ${{ env.module_name }}/build/repos/releases/

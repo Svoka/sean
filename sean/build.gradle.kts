@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.compose.compiler) apply true
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
+    id("maven-publish")
+    signing
 }
 
 android {
@@ -33,6 +35,53 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "io.github.svoka"
+            artifactId = "sean"
+            version = "1.0.1"
+
+            pom {
+                name = "SEAN"
+                description = "Another variant of MVI with Jetpack Compose and ViewModel realisation"
+                url = "https://github.com/Svoka/sean"
+                licenses {
+                    license {
+                        name = "MIT License"
+                        url = "https://opensource.org/license/mit"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "Svoka"
+                        name = "Artem Osipov"
+                        email = "thisistotallytaken@gmail.com"
+                    }
+                }
+                scm {
+                    url = "https://github.com/Svoka/sean"
+                }
+            }
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            // change URLs to point to your repos, e.g. http://my.org/repo
+            val releasesRepoUrl = uri(layout.buildDirectory.dir("repos/releases"))
+            url = releasesRepoUrl
+        }
+    }
+}
+
+signing {
+    sign(publishing.publications["release"])
 }
 
 dependencies {
