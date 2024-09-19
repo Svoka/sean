@@ -30,6 +30,17 @@ jobs:
       - name: Set repository name as env variable
         run: echo "repository_name=$(echo '${{ github.repository }}' | awk -F '/' '{print $2}')" >> $GITHUB_ENV
 
+      - shell: bash
+        env:
+          BEARER: ${{ secrets.MAVEN_CENTRAL }}
+          GPG: ${{ secrets.GPG_FILE }}
+          GPG_KEY_ID: ${{ secrets.GPG_ID_KEY_ID }}
+          GPG_PASSWORD: ${{ secrets.GPG_PASSWORD }}
+        run: |
+          echo $GPG | base64 --decode > /sean/secring.gpg
+          echo "\nsigning.keyId=$GPG_KEY_ID\nsigning.password=$GPG_PASSWORD\nsigning.secretKeyRingFile=secring.gpg\n" >> gradle.properties
+
+
       - name: Set Up JDK
         uses: actions/setup-java@v4
         with:
@@ -39,16 +50,6 @@ jobs:
 
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
-
-      - shell: bash
-        env:
-          BEARER: ${{ secrets.MAVEN_CENTRAL }}
-          GPG: ${{ secrets.GPG_FILE }}
-          GPG_KEY_ID: ${{ secrets.GPG_ID_KEY_ID }}
-          GPG_PASSWORD: ${{ secrets.GPG_PASSWORD }}
-        run: |
-          echo $GPG | base64 --decode > secring.gpg
-          echo "\nsigning.keyId=$GPG_KEY_ID\nsigning.password=$GPG_PASSWORD\nsigning.secretKeyRingFile=secring.gpg\n" >> gradle.properties
 
       - name: Build library
         run: ./gradlew sean:publishAllPublicationsToMavenRepository
