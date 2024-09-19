@@ -20,18 +20,14 @@ jobs:
       - name: get zip
         run: echo "assume we do zip here"
 
-#      - name: upload
       - shell: bash
         env:
-          TEST_ARG: "TEST_VAL"
           BEARER: ${{ secrets.MAVEN_CENTRAL }}
         run: |
-          echo "X-Test: ${TEST_ARG}"
           curl -X 'POST' \
             'https://central.sonatype.com/api/v1/publisher/upload?name=1.0.1&publishingType=USER_MANAGED' \
             -H 'accept: text/plain' \
             -H "Authorization: Bearer $BEARER" \
             -H 'Content-Type: multipart/form-data' \
-            -H "X-Test: ${TEST_ARG}" \
             -F 'bundle=@io.zip;type=application/zip'
 
