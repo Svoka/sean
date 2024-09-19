@@ -3,8 +3,6 @@ name: Publish to maven
 env:
   # The name of the main module repository
   module_name: sean
-  bearer: ${{ secrets.MAVEN_CENTRAL }}
-  test: "TEST_VAL"
 
 on:
   push:
@@ -22,14 +20,17 @@ jobs:
       - name: get zip
         run: echo "assume we do zip here"
 
-      - name: upload
-
+#      - name: upload
+      - shell: bash
+        env:
+          TEST_ARG: "TEST_VAL"
+          BEARER: ${{ secrets.MAVEN_CENTRAL }}
         run: |
           curl -X 'POST' \
             'https://central.sonatype.com/api/v1/publisher/upload?name=1.0.1&publishingType=USER_MANAGED' \
             -H 'accept: text/plain' \
-            -H 'Authorization: Bearer $bearer' \
+            -H "Authorization: Bearer BEARER" \
             -H 'Content-Type: multipart/form-data' \
-            -H "X-Test: ${test}" \
+            -H "X-Test: ${TEST_ARG}" \
             -F 'bundle=@io.zip;type=application/zip'
 
