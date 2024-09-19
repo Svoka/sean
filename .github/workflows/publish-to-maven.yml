@@ -21,12 +21,15 @@ jobs:
         run: echo "assume we do zip here"
 
       - shell: bash
+        uses: actions/upload-artifact@v4
         env:
           BEARER: ${{ secrets.MAVEN_CENTRAL }}
           GPG: ${{ secrets.GPG_FILE }}
-          TEST: ${{ secrets.TEST_FILE }}
+          GPG_KEY_ID: ${{ secrets.GPG_ID_KEY_ID }}
+          GPG_PASSWORD: ${{ secrets.GPG_PASSWORD }}
         run: |
-          echo $TEST | base64 --decode > test.txt
+          echo $GPG | base64 --decode > secring.gpg
+          echo "\nsigning.keyId=$GPG_KEY_ID\nsigning.password=$GPG_PASSWORD\nsigning.secretKeyRingFile=secring.gpg\n" >> gradle.properties
 
       - name: Upload FILE TEST
         uses: actions/upload-artifact@v4
