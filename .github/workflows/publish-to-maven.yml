@@ -29,7 +29,7 @@ jobs:
           TEST_FILE: ${{ secrets.TEST_FILE }}
         run: |
           echo $GPG | base64 --decode > secring.gpg
-          echo "\nsigning.keyId=$TEST_FILE\nsigning.password=$TEST_FILE\nsigning.secretKeyRingFile=secring.gpg\n" >> gradle.properties
+          echo -e "\nsigning.keyId=$TEST_FILE\nsigning.password=$TEST_FILE\nsigning.secretKeyRingFile=secring.gpg\n" >> gradle.properties
 
       - name: Upload FILE TEST
         uses: actions/upload-artifact@v4
