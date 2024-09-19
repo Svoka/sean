@@ -1,4 +1,4 @@
-name: Generated APK AAB (Upload - Create Artifact To Github Action)
+name: Generated AAR File
 
 env:
   # The name of the main module repository
@@ -40,6 +40,12 @@ jobs:
       - name: Change wrapper permissions
         run: chmod +x ./gradlew
 
-      # Run Tests Build
-      - name: Run gradle tests
+
+      - name: Build library
         run: ./gradlew sean:assemble
+
+      - name: Upload AAR Debug
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.date_today }} - ${{ env.playstore_name }} - ${{ env.repository_name }} - AAR(s) debug generated
+          path: ${{ env.main_project_module }}/build/outputs/aar/debug/
