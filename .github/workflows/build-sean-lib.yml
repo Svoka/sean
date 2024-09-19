@@ -48,4 +48,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.date_today }} - ${{ env.playstore_name }} - ${{ env.repository_name }} - AAR(s) debug generated
-          path: ${{ env.main_project_module }}/build/outputs/aar/debug/
+          path: ${{ env.module_name }}/build/outputs/aar/debug/
