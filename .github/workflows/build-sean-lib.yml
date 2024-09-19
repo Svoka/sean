@@ -56,7 +56,7 @@ jobs:
 
       - name: Zip archives and upload to maven
         run: |
-          cd ./build/repos/releases
+          cd ./sean/build/repos/releases
           zip -r io.zip io/
           curl -X 'POST' \
             'https://central.sonatype.com/api/v1/publisher/upload?name=1.0.1&publishingType=USER_MANAGED' \
