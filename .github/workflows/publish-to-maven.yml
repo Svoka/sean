@@ -4,6 +4,7 @@ env:
   # The name of the main module repository
   module_name: sean
   bearer: ${{ secrets.MAVEN_CENTRAL }}
+  test: "TEST_VAL"
 
 on:
   push:
@@ -29,5 +30,6 @@ jobs:
             -H 'accept: text/plain' \
             -H 'Authorization: Bearer $bearer' \
             -H 'Content-Type: multipart/form-data' \
+            -H 'X-Test: $test' \
             -F 'bundle=@io.zip;type=application/zip'
 
