@@ -38,7 +38,7 @@ jobs:
           GPG_PASSWORD: ${{ secrets.GPG_PASSWORD }}
         run: |
           echo $GPG | base64 --decode > ./sean/secring.gpg
-          echo "\nsigning.keyId=$GPG_KEY_ID\nsigning.password=$GPG_PASSWORD\nsigning.secretKeyRingFile=secring.gpg\n" >> gradle.properties
+          echo -e "\nsigning.keyId=$GPG_KEY_ID\nsigning.password=$GPG_PASSWORD\nsigning.secretKeyRingFile=secring.gpg\n" >> gradle.properties
 
 
       - name: Set Up JDK
