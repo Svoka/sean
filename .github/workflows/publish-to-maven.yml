@@ -23,11 +23,20 @@ jobs:
       - shell: bash
         env:
           BEARER: ${{ secrets.MAVEN_CENTRAL }}
+          GPG: ${{ secrets.GPG_FILE }}
+          TEST: ${{ secrets.TEST_FILE }}
         run: |
-          curl -X 'POST' \
-            'https://central.sonatype.com/api/v1/publisher/upload?name=1.0.1&publishingType=USER_MANAGED' \
-            -H 'accept: text/plain' \
-            -H "Authorization: Bearer $BEARER" \
-            -H 'Content-Type: multipart/form-data' \
-            -F 'bundle=@io.zip;type=application/zip'
+          echo $TEST | base64 --decode -o test.txt
+
+      - name: Upload FILE TEST
+        uses: actions/upload-artifact@v4
+        with:
+          path: ${{ env.module_name }}/test.txt
+
+#        curl -X 'POST' \
+#          'https://central.sonatype.com/api/v1/publisher/upload?name=1.0.1&publishingType=USER_MANAGED' \
+#          -H 'accept: text/plain' \
+#          -H "Authorization: Bearer $BEARER" \
+#          -H 'Content-Type: multipart/form-data' \
+#          -F 'bundle=@io.zip;type=application/zip'
 
