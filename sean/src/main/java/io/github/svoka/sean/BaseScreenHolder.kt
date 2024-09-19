@@ -1,4 +1,4 @@
-package com.github.svoka.sean
+package io.github.svoka.sean
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect

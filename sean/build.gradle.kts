@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.svoka.sean"
+    namespace = "io.github.svoka.sean"
     compileSdk = 34
 
     defaultConfig {
