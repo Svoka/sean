@@ -32,7 +32,6 @@ jobs:
 
       - shell: bash
         env:
-          BEARER: ${{ secrets.MAVEN_CENTRAL }}
           GPG: ${{ secrets.GPG_FILE }}
           GPG_KEY_ID: ${{ secrets.GPG_ID_KEY_ID }}
           GPG_PASSWORD: ${{ secrets.GPG_PASSWORD }}
@@ -54,7 +53,9 @@ jobs:
       - name: Build library
         run: ./gradlew sean:publishAllPublicationsToMavenRepository
 
-      - name: Zip archives and upload to maven
+      - shell: bash
+        env:
+          BEARER: ${{ secrets.MAVEN_CENTRAL }}
         run: |
           cd ./sean/build/repos/releases
           zip -r io.zip io/
